@@ -1,64 +1,82 @@
 window.addEventListener('DOMContentLoaded', function(){
     'use strict';
 
+/**
+ * Класс создание и настройки табов
+ */
+class Tabs{
     /**
-     * Функция управления вкладками
-     * @param {*} wrapper - родитель переключателей вкладок
-     * @param {*} tabsBtn - масив переключателей
-     * @param {*} contents - масив блоков контента
+     * Принимаем на вход часть имени классов для элементов: табов и контента
+     * @param {часть имени класа} classHead 
      */
-    function tabsRun(wrapper, tabsBtn, contents){
-        function displayTabs(a){
-            for(let i = 0; i < contents.length; i++){
-                if(a == i){
-                    showTab(i); // показываем вкладку
-                } else {
-                    hideTab(i); // прячем вкладку
-                }
-            }
-        }
-    
-        /**
+    constructor(classHead = 'info'){
+        this._tab = document.querySelector(`.${classHead}`);
+        this._tabs = document.querySelectorAll(`.${classHead}-header-tab`);
+        this._tabContents = document.querySelectorAll(`.${classHead}-tabcontent`);
+        this._changeTabs = this._changeTabs.bind(this);
+    }
+
+    /**
          * Отображение вкладки
          * @param {index} a - индекс вкладки
          */
-        function showTab(a){
-            contents[a].classList.add("show");
-            contents[a].classList.remove("hide");
-        }
-    
-        /**
+    _showTab(a){
+        this._tabContents[a].classList.add("show");
+        this._tabContents[a].classList.remove("hide");
+    }
+
+    /**
          * Прячем вкладку
          * @param {index} a 
          */
-        function hideTab(a){
-            contents[a].classList.remove("show");
-            contents[a].classList.add("hide");
-        }
-    
-        // Прячем все вкладки кроме первой, так как только загружен документ
-        displayTabs(0);
-    
-        wrapper.addEventListener('click', function(event){
-            let target = event.target;
-    
-            for(let i = 0; i < tabsBtn.length; i++){
-                if(tabsBtn[i] == target){
-                    displayTabs(i);
-                    break;
-                }
-            }
-        });
+    _hideTab(a){
+        this._tabContents[a].classList.remove("show");
+        this._tabContents[a].classList.add("hide");
     }
 
-    // Использование:
+    /**
+     * Перебераем вкладки и меняем им свойства
+     * @param {индекс вкладки} a 
+     */
+    _displayTabs(a){
+        for(let i = 0; i < this._tabContents.length; i++){
+            if(a == i){
+                this._showTab(i);
+            } else {
+                this._hideTab(i);
+            }
+        }
+    }
 
-    // start
-    let tab = document.querySelector(".info"),
-        tabs = document.querySelectorAll(".info-header-tab"),
-        tabContents = document.querySelectorAll(".info-tabcontent");
+    /**
+     * Метод для обработки события: 
+     * проверяем место нажатия, если попали на кнопку - берем её индекс
+     * и запускаем перебор вкладок контента с этим индексом
+     * @param {событие 'click'} event 
+     */
+    _changeTabs(event){
+        let target = event.target;
+    
+        for(let i = 0; i < this._tabs.length; i++){
+            if(this._tabs[i] == target){
+               this._displayTabs(i);
+               break;
+            }
+        }
+    }
 
-    tabsRun(tab, tabs, tabContents);
-    // end
+    /**
+     * Применение скрипта к документу
+     */
+    apply(){
+        // Прячем все вкладки кроме первой, так как только загружен документ
+        this._displayTabs(0);
+        // Добавляем слушатель на блок переключателей
+        this._tab.addEventListener('click', this._changeTabs);
+    }
+}
+
+//new Tabs().apply();
+new Tabs('info').apply();
 
 });
