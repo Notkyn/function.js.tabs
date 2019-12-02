@@ -1,32 +1,47 @@
+# Tabs
+Tabs for switching content.
+## How to use:
+- **creating:**
+```javascript
+import { Tabs } from './script';
+const tabs = new Tabs('info');
+```
+**`info`** - tabs container class, default value **`info`**
+- **layout structure:**
+```html
+<div class="key">
+    <div class="key-header">
+        <div class="key-header-tab">Tab_1</div>
+    	<div class="key-header-tab">Tab_2</div>
+        <div class="key-header-tab">...</div>
+    	<div class="key-header-tab">Tab_N</div>
+    </div>
+    <div class="key-tabcontent">
+        ... content for tab_1 ...
+    </div>
+    ......
+    <div class="key-tabcontent">
+        ... content for tab_N ...    
+    </div>
+</div>
+```
+**`key`** - key class, set to the common container of tabs (_example: `info`_), used to define nested containers
 
-     *****************************************************
-     *****************************************************
-     *****                                           *****
-     *****      Создание простых табов на сайте.     *****
-     *****                                           *****
-     *****************************************************
-     *****************************************************
+**`${key}-header`** - tabs switches block class (_example: `info-header`_)
 
-Описание:
-    Вкладки для переключения контента.
-    
-Реализация:
-    1) Конструктор принимает значение - часть имени класса для DOM элементов.
-        - по умолчанию класс используется с приставкой 'info'
-    2) Разметка:
-        - класс общего блока для табов: .${ваше значение} (.info)
-        - класс для переключателей: .${ваше значение}-header-tab (.info-header-tab)
-        - класс для контейнера контента: .${ваше значение}-tabcontent (.info-tabcontent)
-        - СSS должен иметь два класса:
-            .hide: display: none
-            .show: display: flex
-    2) Со страници берется масив переключателей и масив блоков контента. 
-    Индексы переключателей и контента должны идти попорядку. 
-    При нажатии на выбраную вкладку идет перебор всех переключателей в масиве.
-    Если найден target по которому было произведенно событие click, то контент, 
-    который находится по такому же индексу в масиве, выводится, 
-    а остальные блоки прячутся (display: none).
+**`${key}-header-tab`** - tab switch class (_example: `info-header-tab`_)
 
-Использование:
-    Создаем экземпляр класса.
-    Вызываем метод apply().
+**`${key}-tabcontent`** - content class (_example: `info-tabcontent`_)
+
+**`N`** - index of switches and content blocks.  The index of the active switch shows content under the same index.
+- **css:**
+
+style.css must have classes:
+```css
+    .hide: display: none
+    .show: display: flex
+```
+- **run:**   
+```javascript
+tabs.apply();
+```
